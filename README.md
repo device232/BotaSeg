@@ -6,28 +6,10 @@ phenotyping framework for field-grown rapeseed. BotaSeg combines Point
 Transformer v3 and SpUNet through geometry-aware fusion, botanical
 topology-aware reasoning, and semantic-guided offset regression.
 
-<p align="center">
-  <img src="assets/phenotyping-workflow.png" alt="From organ instances to calibrated plant traits and phenotype fingerprints" width="100%">
-</p>
-
-*From organ-resolved point-cloud parsing to metric-calibrated traits and phenotype fingerprints.*
-
 The accompanying manuscript evaluates the method on 36 manually annotated
 rapeseed plants using five held-out-area folds, and on two external plant
 point-cloud datasets. The manuscript reports `88.44 ± 1.05%` mIoU and
 `71.02 ± 3.46%` mAP on the rapeseed benchmark.
-
-<p align="center">
-  <img src="assets/qualitative-comparison.png" alt="Semantic and instance segmentation comparison of RGB, ground truth, PTv3, and BotaSeg for six rapeseed plants" width="100%">
-</p>
-
-*Qualitative comparison on six held-out rapeseed plants. BotaSeg is evaluated against PTv3 for semantic and organ-instance parsing.*
-
-<p align="center">
-  <img src="assets/trait-agreement.png" alt="Out-of-fold agreement between annotation-derived and prediction-derived plant traits" width="100%">
-</p>
-
-*Out-of-fold agreement between annotation-derived and prediction-derived point-cloud descriptors across 36 plants.*
 
 ## Release scope
 
