@@ -1,0 +1,35 @@
+# Python and native-extension build products
+__pycache__/
+*.py[cod]
+*.so
+*.o
+*.a
+build/
+dist/
+*.egg-info/
+
+# Experiment outputs, checkpoints, logs, and rendered predictions
+exp/
+outputs/
+work_dirs/
+*.pth
+*.pt
+*.ckpt
+*.log
+events.out.tfevents.*
+wandb/
+
+# Datasets are obtained separately and must not enter Git history.
+myno2paperdatasetpreed/
+data/
+datasets/
+
+# Pointcept preprocessing code is outside this paper release's scope.
+pointcept/datasets/preprocessing/
+
+# Editor, OS, and local environment files
+.DS_Store
+.idea/
+.vscode/
+.venv*/
+*.swp

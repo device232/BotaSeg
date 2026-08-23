@@ -1,0 +1,30 @@
+name: botaseg
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pytorch=2.1
+  - torchvision=0.16
+  - torchaudio=2.1
+  - pytorch-cuda=11.8
+  - ninja
+  - h5py
+  - pyyaml
+  - scipy
+  - plyfile
+  - tensorboard
+  - tensorboardx
+  - addict
+  - einops
+  - termcolor
+  - timm
+  - pip
+  - pip:
+      - torch-geometric
+      - torch-cluster
+      - torch-scatter
+      - torch-sparse
+      - spconv-cu118
+      - open3d

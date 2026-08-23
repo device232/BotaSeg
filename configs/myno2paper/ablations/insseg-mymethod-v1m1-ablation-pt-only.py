@@ -1,0 +1,56 @@
+_base_ = ["../insseg-mymethod-v1m1-0-base.py"]
+
+custom_imports = dict(
+    imports=["pointcept.models.mymethod.mymethod_ablation_v1m1"],
+    allow_failed_imports=False,
+)
+
+# PTv3 only: retain BTA-Neck and SGG-Head, remove the SpUNet stream.
+model = dict(
+    _delete_=True,
+    type="MyMethod-v1m1-PTOnly",
+    backbone=dict(
+        type="PT-v3m1",
+        in_channels=6,
+        order=("z", "z-trans", "hilbert", "hilbert-trans"),
+        stride=(2, 2, 2, 2),
+        enc_depths=(2, 2, 2, 6, 2),
+        enc_channels=(32, 64, 128, 256, 512),
+        enc_num_head=(2, 4, 8, 16, 32),
+        enc_patch_size=(1024, 1024, 1024, 1024, 1024),
+        dec_depths=(2, 2, 2, 2),
+        dec_channels=(64, 64, 128, 256),
+        dec_num_head=(4, 4, 8, 16),
+        dec_patch_size=(1024, 1024, 1024, 1024),
+        mlp_ratio=4,
+        qkv_bias=True,
+        qk_scale=None,
+        attn_drop=0.0,
+        proj_drop=0.0,
+        drop_path=0.3,
+        pre_norm=True,
+        shuffle_orders=True,
+        enable_rpe=False,
+        enable_flash=True,
+        upcast_attention=False,
+        upcast_softmax=False,
+        cls_mode=False,
+    ),
+    backbone_out_channels=64,
+    fusion_channels=64,
+    semantic_num_classes={{ _base_.num_classes }},
+    semantic_ignore_index=-1,
+    segment_ignore_index={{ _base_.segment_ignore_index }},
+    instance_ignore_index=-1,
+    cluster_thresh=2.5,
+    cluster_closed_points=300,
+    cluster_propose_points=50,
+    cluster_min_points=10,
+    voxel_size={{ _base_.grid_size }},
+    semantic_loss_weight=1.0,
+    aux_loss_weight=0.4,
+    offset_l1_loss_weight=1.0,
+    offset_cosine_loss_weight=1.0,
+    expert_offset_loss_weight=0.1,
+)
+
