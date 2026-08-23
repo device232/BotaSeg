@@ -171,10 +171,48 @@ def summarize_cluster(exp_root, columns):
     )
 
 
+def summarize_protocol_stage(exp_root, columns, stage):
+    if stage == "validation":
+        source_name = "validation_cluster_sweep.tsv"
+        fold_name = "validation_selection_fold_metrics.tsv"
+        summary_name = "validation_selection_summary_metrics.tsv"
+    elif stage == "test":
+        source_name = "test_metrics.tsv"
+        fold_name = "test_fold_metrics.tsv"
+        summary_name = "test_summary_metrics.tsv"
+    else:
+        raise ValueError(f"Unknown protocol stage: {stage}")
+
+    fold_metrics = {}
+    for table in sorted(exp_root.glob(f"run_*_test_Area_*/{source_name}")):
+        with table.open(newline="") as f:
+            rows = list(csv.DictReader(f, delimiter="\t"))
+        if rows:
+            fold_metrics[table.parent.name] = rows[0]
+    write_summary(
+        exp_root,
+        fold_metrics,
+        fold_name,
+        summary_name,
+        columns,
+        include_cluster=True,
+    )
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("exp_root")
     parser.add_argument("--cluster", action="store_true")
+    parser.add_argument(
+        "--validation",
+        action="store_true",
+        help="Summarize validation-only cluster-parameter selections from the 3/1/1 protocol.",
+    )
+    parser.add_argument(
+        "--test",
+        action="store_true",
+        help="Summarize fixed-parameter held-out test metrics from the 3/1/1 protocol.",
+    )
     parser.add_argument(
         "--classes",
         default=",".join(DEFAULT_CLASSES),
@@ -185,8 +223,15 @@ def main():
     exp_root = pathlib.Path(args.exp_root)
     classes = [name.strip() for name in args.classes.split(",") if name.strip()]
     columns = build_columns(classes)
+    selected = sum((args.cluster, args.validation, args.test))
+    if selected > 1:
+        parser.error("Use at most one of --cluster, --validation, or --test.")
     if args.cluster:
         summarize_cluster(exp_root, columns)
+    elif args.validation:
+        summarize_protocol_stage(exp_root, columns, "validation")
+    elif args.test:
+        summarize_protocol_stage(exp_root, columns, "test")
     else:
         summarize_train(exp_root, columns, classes)
 

@@ -2,22 +2,44 @@
 
 ## Core five-fold experiment
 
-The primary protocol holds out one of `Area_1` to `Area_5` in turn. In each
-run, the remaining four areas are used for training and the held-out area is
-used for validation/testing. The proposed configuration is
-`configs/myno2paper/insseg-mymethod-v1m1-0-base.py`.
+The primary protocol is a five-run train-validation-test evaluation. In each
+run, three folds are used for training, one distinct fold is used for
+checkpoint selection and cluster-parameter calibration, and one remaining
+fold is reserved for final testing. Neither checkpoint nor cluster parameters
+may be selected on a test fold. The proposed configuration is
+`configs/myno2paper/insseg-mymethod-v1m1-0-base.py`; the canonical mapping
+is versioned in `splits/rapeseed_5fold_train_val_test.json`.
+
+| Run | Train folds | Validation | Test |
+| --- | --- | --- | --- |
+| run_01 | Area_3, Area_4, Area_5 | Area_2 | Area_1 |
+| run_02 | Area_1, Area_4, Area_5 | Area_3 | Area_2 |
+| run_03 | Area_1, Area_2, Area_5 | Area_4 | Area_3 |
+| run_04 | Area_1, Area_2, Area_3 | Area_5 | Area_4 |
+| run_05 | Area_2, Area_3, Area_4 | Area_1 | Area_5 |
 
 ```bash
 DATA_ROOT=/path/to/processed/data \
-GPU=1 BATCH_SIZE=8 EPOCH=1000 EVAL_EPOCH=100 \
+GPU=1 BATCH_SIZE=8 EPOCH=100 EVAL_EPOCH=100 \
 bash scripts/train_rapeseed_5fold.sh
 ```
 
-The script records fold-specific outputs in
-`exp/myno2paper/insseg-mymethod-v1m1-5fold/val_Area_*`. These outputs are
-not source-controlled. Freeze the generated `fold_metrics.tsv`,
-`summary_metrics.tsv`, and clustering sweep tables in the model archive that
-accompanies a paper release.
+The configuration repeats the training dataset ten times per evaluation epoch,
+matching the manuscript's 100 evaluation epochs with a 10-fold loader
+repetition. Training writes one directory per test fold, named
+`run_XX_test_Area_Y`. These outputs are not source-controlled.
+
+After training, select clustering parameters on validation only and evaluate
+the held-out test fold with the fixed selected values:
+
+```bash
+EXP_ROOT=exp/myno2paper/insseg-mymethod-v1m1-5fold \
+bash scripts/postprocess_rapeseed_5fold.sh
+```
+
+Archive `validation_selection_fold_metrics.tsv`, `test_fold_metrics.tsv`,
+`test_summary_metrics.tsv`, every validation sweep table, and the five copied
+configs/checkpoints with the model release.
 
 ## Paper-to-code mapping
 

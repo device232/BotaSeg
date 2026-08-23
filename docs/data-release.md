@@ -21,7 +21,7 @@ Create a versioned `v1.0.0` release containing:
 botaseg-rapeseed-3d-v1.0.0/
 ├── Area_1/ ... Area_5/             # coord/color/segment/instance .npy arrays
 ├── metadata.tsv                    # sample identifier, fold, phenotype group, and acquisition metadata
-├── folds.json                      # fixed five-fold split used by the manuscript
+├── rapeseed_5fold_train_val_test.json # fixed 3/1/1 protocol used by the manuscript
 ├── README.md                       # data card and intended use
 ├── LICENSE-DATA                    # data-specific license
 └── SHA256SUMS.txt                  # checksum for every distributed file
@@ -39,7 +39,7 @@ folds they need.
 - Acquisition and reconstruction protocol; annotation definitions and quality control.
 - Exact semantic mapping: `0=leaf`, `1=petiole`, `2=stem`, `-1=ignore`.
 - Coordinate convention, units/scale, color encoding, and array shapes.
-- Fold membership and a statement that folds are fixed for paper reproduction.
+- Fold membership and the versioned 3/1/1 train-validation-test mapping.
 - License and any reuse restrictions; confirm the release is authorized by the
   data owner and field-site policy.
 - Known limitations, intended research uses, and exclusions.

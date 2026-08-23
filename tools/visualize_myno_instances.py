@@ -190,6 +190,12 @@ def main():
     parser.add_argument("--config", required=True)
     parser.add_argument("--weight", required=True)
     parser.add_argument("--save-dir", default=None)
+    parser.add_argument(
+        "--data-split",
+        choices=("val", "test"),
+        default="val",
+        help="Select the validation or held-out test dataset configured for this run.",
+    )
     parser.add_argument("--split", default=None)
     parser.add_argument("--scene-limit", type=int, default=None)
     parser.add_argument("--score-thr", type=float, default=0.0)
@@ -213,11 +219,12 @@ def main():
     args = parser.parse_args()
 
     cfg = Config.fromfile(args.config)
+    dataset_cfg = cfg.data.val if args.data_split == "val" else cfg.data.test
     if args.split is not None:
-        cfg.data.val.split = args.split
+        dataset_cfg.split = args.split
     save_dir = args.save_dir or os.path.join(cfg.save_path, "visualization")
 
-    dataset = build_dataset(cfg.data.val)
+    dataset = build_dataset(dataset_cfg)
     loader = DataLoader(dataset, batch_size=1, shuffle=False, collate_fn=collate_fn)
     model = build_model(cfg.model).cuda().eval()
     if args.cluster_thresh is not None:

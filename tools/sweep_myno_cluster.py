@@ -145,6 +145,12 @@ def main():
     parser.add_argument("--config", required=True)
     parser.add_argument("--weight", required=True)
     parser.add_argument("--save-path", default=None)
+    parser.add_argument(
+        "--data-split",
+        choices=("val", "test"),
+        default="val",
+        help="Use validation for parameter selection or test for a fixed-parameter evaluation.",
+    )
     parser.add_argument("--split", default=None)
     parser.add_argument("--cluster-thresh", default="0.8,1.0,1.2,1.3,1.5,1.8,2.0")
     parser.add_argument("--cluster-propose-points", default="20,50,100")
@@ -156,9 +162,10 @@ def main():
     device = torch.device("cuda")
 
     cfg = Config.fromfile(args.config)
+    dataset_cfg = cfg.data.val if args.data_split == "val" else cfg.data.test
     if args.split is not None:
-        cfg.data.val.split = args.split
-    dataset = build_dataset(cfg.data.val)
+        dataset_cfg.split = args.split
+    dataset = build_dataset(dataset_cfg)
     loader = DataLoader(dataset, batch_size=1, shuffle=False, collate_fn=collate_fn)
 
     model = build_model(cfg.model).to(device).eval()

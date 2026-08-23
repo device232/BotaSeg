@@ -7,9 +7,10 @@ Transformer v3 and SpUNet through geometry-aware fusion, botanical
 topology-aware reasoning, and semantic-guided offset regression.
 
 The accompanying manuscript evaluates the method on 36 manually annotated
-rapeseed plants using five held-out-area folds, and on two external plant
-point-cloud datasets. The manuscript reports `88.44 ± 1.05%` mIoU and
-`71.02 ± 3.46%` mAP on the rapeseed benchmark.
+rapeseed plants using five predefined train-validation-test runs (three folds
+for training, one for validation, and one held out for testing), and on two
+external plant point-cloud datasets. The manuscript reports `88.44 ± 1.05%`
+mIoU and `71.02 ± 3.46%` mAP on the rapeseed benchmark.
 
 ## Release scope
 

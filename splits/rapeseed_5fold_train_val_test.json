@@ -1,0 +1,37 @@
+{
+  "name": "BotaSeg rapeseed five-run train-validation-test protocol",
+  "version": "1.0.0",
+  "description": "Each run trains on three predefined folds, selects checkpoints and clustering parameters on one validation fold, and evaluates once on a distinct held-out test fold.",
+  "runs": [
+    {
+      "id": "run_01",
+      "train": ["Area_3", "Area_4", "Area_5"],
+      "validation": "Area_2",
+      "test": "Area_1"
+    },
+    {
+      "id": "run_02",
+      "train": ["Area_1", "Area_4", "Area_5"],
+      "validation": "Area_3",
+      "test": "Area_2"
+    },
+    {
+      "id": "run_03",
+      "train": ["Area_1", "Area_2", "Area_5"],
+      "validation": "Area_4",
+      "test": "Area_3"
+    },
+    {
+      "id": "run_04",
+      "train": ["Area_1", "Area_2", "Area_3"],
+      "validation": "Area_5",
+      "test": "Area_4"
+    },
+    {
+      "id": "run_05",
+      "train": ["Area_2", "Area_3", "Area_4"],
+      "validation": "Area_1",
+      "test": "Area_5"
+    }
+  ]
+}

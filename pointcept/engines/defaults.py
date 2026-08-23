@@ -120,7 +120,10 @@ def default_config_parser(file_path, options):
     if cfg.seed is None:
         cfg.seed = get_random_seed()
 
-    cfg.data.train.loop = cfg.epoch // cfg.eval_epoch
+    # Paper-specific configurations can define an explicit loader repetition
+    # factor. Preserve it instead of deriving a value from evaluation cadence.
+    if not hasattr(cfg.data.train, "loop") or cfg.data.train.loop is None:
+        cfg.data.train.loop = cfg.epoch // cfg.eval_epoch
 
     os.makedirs(os.path.join(cfg.save_path, "model"), exist_ok=True)
     if not cfg.resume:
