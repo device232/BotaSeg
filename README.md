@@ -20,6 +20,12 @@ deliberately excludes raw images, reconstructed point clouds, annotations,
 training logs, prediction dumps, model checkpoints, and the manuscript.
 Those materials require separate access and/or archival release.
 
+> **Protocol status.** The code enforces the manuscript's five-run 3/1/1
+> train-validation-test protocol. Legacy outputs produced with a shared
+> validation/test fold must not be reported as results from this protocol;
+> checkpoints and frozen tables should be regenerated before a final archival
+> release.
+
 | Material | Release location |
 | --- | --- |
 | BotaSeg source, configs, and scripts | This repository |
