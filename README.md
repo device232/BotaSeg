@@ -29,7 +29,7 @@ Those materials require separate access and/or archival release.
 | Material | Release location |
 | --- | --- |
 | BotaSeg source, configs, and scripts | This repository |
-| Rapeseed annotations and processed point clouds | Dataset archive — link to be added after authorization |
+| Rapeseed annotations and processed point clouds | [Zenodo dataset archive](https://doi.org/10.5281/zenodo.22069318) (restricted access; requests are reviewed through Zenodo) |
 | Pretrained five-fold weights and frozen result tables | Model archive — link to be added after release freeze |
 | PLANesT-3D and Archive Plants | Their original providers; this repository supplies only compatible layout guidance |
 
@@ -52,8 +52,10 @@ when the local CUDA/PyTorch combination does not support it.
 
 ## Data layout and validation
 
-Set `DATA_ROOT` to the separately obtained processed rapeseed dataset. It
-must contain `Area_1` through `Area_5`; each plant directory contains
+Set `DATA_ROOT` to the processed rapeseed dataset, available from the
+[Zenodo dataset archive](https://doi.org/10.5281/zenodo.22069318). Access to
+the archive is restricted; submit an access request on the Zenodo record. The
+dataset must contain `Area_1` through `Area_5`; each plant directory contains
 `coord.npy`, `color.npy`, `segment.npy`, and `instance.npy`.
 
 ```bash
